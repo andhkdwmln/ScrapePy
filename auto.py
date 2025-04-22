@@ -4,6 +4,9 @@ import asyncio
 import aiohttp
 
 from telethon import TelegramClient, events
+from colorama import Fore, Style, init
+
+init(autoreset=True)
 
 # Data required
 api_id = 0 # CHANGE TO YOUR API ID
@@ -32,7 +35,7 @@ async def RequestURL(session, card):
                 f = os.path.join('result', 'charged.txt')
                 with open(f, 'a') as file:
                     file.write(f"{card}\n")
-                print(f'[HITS] {card} => Charged')
+                print(f'{Fore.BLUE}[HITS] {card} => Charged')
 
                 # Forward Telegram
                 telesage = (
@@ -46,7 +49,7 @@ async def RequestURL(session, card):
                 f = os.path.join('result', 'approved.txt')
                 with open(f, 'a') as file:
                     file.write(f"{card}\n")
-                print(f'[LIVE] {card} => Approved')
+                print(f'{Fore.GREEN}[LIVE] {card} => Approved')
 
                 # Forward Telegram
                 telesage = (
@@ -60,16 +63,16 @@ async def RequestURL(session, card):
                 f = os.path.join('result', 'insuf.txt')
                 with open(f, 'a') as file:
                     file.write(f"{card}\n")
-                print(f'[LIVE] {card} => Your card has insufficient funds.')
+                print(f'{Fore.MAGENTA}[LIVE] {card} => Your card has insufficient funds.')
             elif message == "Your card's security code is incorrect.":
                 f = os.path.join('result', 'ccn.txt')
                 with open(f, 'a') as file:
                     file.write(f"{card}\n")
-                print(f'[LIVE] {card} => Your card\'s security code is incorrect.')
+                print(f'{Fore.MAGENTA}[LIVE] {card} => Your card\'s security code is incorrect.')
             else:
-                print(f'[DIED] {card} => {message}')
+                print(f'{Fore.RED}[DIED] {card} => {message}')
     except Exception as e:
-        print(f'[EROR] {card} => {e}')
+        print(f'{Fore.YELLOW}[EROR] {card} => {e}')
 
 # Message handler
 @client.on(events.NewMessage(chats=t_scrape))
