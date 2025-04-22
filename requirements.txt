@@ -1,0 +1,3 @@
+aiohttp==3.11.17
+colorama==0.4.6
+Telethon==1.39.0
