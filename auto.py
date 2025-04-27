@@ -13,7 +13,7 @@ api_id = 0 # CHANGE TO YOUR API ID
 api_hash = 'xxx' # CHANGE TO YOUR API HASH
 
 # URL
-api_url = '' # CHANGE TO YOUR API URL
+api_url = 'http://localhost:5000' # CHANGE TO YOUR API URL
 
 # Scrape and Forward
 t_scrape = '' # Telegram Channel to Scrape
@@ -93,7 +93,15 @@ async def handler(event):
 # Main client runner
 async def main():
     await client.start()
-    print("Telegram client is running and listening...")
+    print('''
+███████╗ ██████╗██████╗  █████╗ ██████╗ ███████╗██████╗ ██╗   ██╗
+██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗╚██╗ ██╔╝
+███████╗██║     ██████╔╝███████║██████╔╝█████╗  ██████╔╝ ╚████╔╝ 
+╚════██║██║     ██╔══██╗██╔══██║██╔═══╝ ██╔══╝  ██╔═══╝   ╚██╔╝  
+███████║╚██████╗██║  ██║██║  ██║██║     ███████╗██║        ██║   
+╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝        ╚═╝   
+
+                            Version 1.0''')
     await client.run_until_disconnected()
 
 if __name__ == '__main__':
